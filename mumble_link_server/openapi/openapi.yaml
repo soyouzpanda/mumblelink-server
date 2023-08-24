@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
+  title: Mumble Link Core
+  version: 1.0.0
+servers:
+- url: /
+security:
+- Bearer: []
+paths:
+  /server/{server_id}:
+    delete:
+      operationId: server_server_id_delete
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Empty
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Server not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal error
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+    get:
+      operationId: server_server_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerInfo'
+          description: Server info
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Server not found
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /server/{server_id}/user/{user_id}:
+    get:
+      operationId: server_server_id_user_user_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+          description: User info
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /server/{server_id}/user/{user_id}/mute:
+    post:
+      operationId: server_server_id_user_user_id_mute_post
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Empty
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /server/{server_id}/user/{user_id}/unmute:
+    post:
+      operationId: server_server_id_user_user_id_unmute_post
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Empty
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /server/{server_id}/users:
+    get:
+      operationId: server_server_id_users_get
+      parameters:
+      - explode: false
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_server__server_id__users_get_200_response'
+          description: Users info
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Server not found
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /servers:
+    get:
+      operationId: servers_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_servers_get_200_response'
+          description: Servers info
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error while getting list
+      summary: Get list of servers
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+  /servers/create:
+    post:
+      operationId: servers_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_servers_create_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerInfo'
+          description: Server info
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal error
+      summary: Create a new server
+      x-openapi-router-controller: mumble_link_server.controllers.default_controller
+components:
+  schemas:
+    ServerInfo:
+      example:
+        connected_users: 6
+        server_name: server_name
+        server_id: server_id
+        max_users: 0
+      properties:
+        server_id:
+          title: server_id
+          type: string
+        server_name:
+          title: server_name
+          type: string
+        max_users:
+          title: max_users
+          type: integer
+        connected_users:
+          title: connected_users
+          type: integer
+      title: ServerInfo
+      type: object
+    UserInfo:
+      example:
+        self_deaf: true
+        user_id: user_id
+        user_name: user_name
+        deaf: true
+        mute: true
+        self_mute: true
+      properties:
+        user_id:
+          title: user_id
+          type: string
+        user_name:
+          title: user_name
+          type: string
+        mute:
+          title: mute
+          type: boolean
+        deaf:
+          title: deaf
+          type: boolean
+        self_mute:
+          title: self_mute
+          type: boolean
+        self_deaf:
+          title: self_deaf
+          type: boolean
+      title: UserInfo
+      type: object
+    Error:
+      properties:
+        error:
+          title: error
+          type: string
+      title: Error
+      type: object
+    _servers_get_200_response:
+      example:
+        servers:
+        - connected_users: 6
+          server_name: server_name
+          server_id: server_id
+          max_users: 0
+        - connected_users: 6
+          server_name: server_name
+          server_id: server_id
+          max_users: 0
+      properties:
+        servers:
+          items:
+            $ref: '#/components/schemas/ServerInfo'
+          title: servers
+          type: array
+      title: _servers_get_200_response
+      type: object
+    _servers_create_post_request:
+      properties:
+        name:
+          title: name
+          type: string
+        max_users:
+          title: max_users
+          type: integer
+      title: _servers_create_post_request
+      type: object
+    _server__server_id__users_get_200_response:
+      example:
+        users:
+        - connected_users: 6
+          server_name: server_name
+          server_id: server_id
+          max_users: 0
+        - connected_users: 6
+          server_name: server_name
+          server_id: server_id
+          max_users: 0
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/ServerInfo'
+          title: users
+          type: array
+      title: _server__server_id__users_get_200_response
+      type: object
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: mumble_link_server.controllers.security_controller_.info_from_Bearer

@@ -1,0 +1,3 @@
+packageName: mumble_link_server
+packageVersion: 1.0.0
+serverPort: 8080

@@ -1,0 +1,3 @@
+[submodule "mumblelink-api"]
+	path = mumblelink-api
+	url = git@github.com:soyouzpanda/mumblelink-api.git
