@@ -22,4 +22,12 @@
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
 
+.gitmodules
+.gitignore
+.travis.yml
+mumble_link_server/__main__.py
 mumble_link_server/controllers/default_controller.py
+mumble_link_server/controllers/security_controller_.py
+requirements.txt
+mumble_link_server/mumble/__init__.py
+mumble_link_server/mumble/murmur_connector.py

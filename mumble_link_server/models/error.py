@@ -60,5 +60,7 @@ class Error(Model):
         :param error: The error of this Error.
         :type error: str
         """
+        if error is None:
+            raise ValueError("Invalid value for `error`, must not be `None`")  # noqa: E501
 
         self._error = error
